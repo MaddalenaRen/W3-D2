@@ -36,8 +36,8 @@
 
 <body>
   <div>
-    <h1 id="title">Questo è il titolo della pagina</h1>
-    <h2 id="sub-title">Questo è il sottotitolo della pagina</h2>
+    <h1>Questo è il titolo della pagina</h1>
+    <h2 onclick="changeColorWithRandom()">Questo è il sottotitolo della pagina</h2>
   </div>
 
   <div>
@@ -55,7 +55,8 @@
       <li>3rd</li>
     </ul>
 
-    <a id="link" href="https://epicode.com/it/">Questo link porta al sito di Epicode</a>
+    <a href="https://epicode.com/it/">Questo link porta al sito di Epicode</a>
+
 
     <div>
       <p>Questo testo è un placeholder per gli esercizi</p>
@@ -64,7 +65,7 @@
 
   <div>
     <p>Anche questo testo è per gli esercizi</p>
-    <h2 id="changeMyColor" style="color: #ff00d6">
+    <h2 id="changeMyColor" style="color: #ff00d6" onclick="changeColorWithRandom()">
       Apri questa pagina con VSCode per scoprire gli esercizi
     </h2>
   </div>
@@ -82,25 +83,21 @@
     /* ESERCIZIO 1
      Scrivi una funzione per cambiare il titolo della pagina in qualcos'altro
   */
-
     const changeTitle = function () {
-      const title = document.getElementById('title')
-      title.style.color = 'lightblue'
-      title.style.fontFamily = 'Arial'
-      title.style.fontWeight = 'Bold'
+      const title = document.querySelector('h1')
+      title.innerText = 'Nuovo Titolo'
     }
-
     changeTitle()
     /* ESERCIZIO 2
      Scrivi una funzione per aggiungere al titolo della pagina una classe "myHeading"
   */
 
     const addClassToTitle = function () {
-      const title = document.getElementById('title')
+      const title = document.querySelector('h1')
+      title.classList.remove('myClass')
       title.classList.add('myHeading')
     }
-
-    addClassToTitle
+    addClassToTitle()
 
     /* ESERCIZIO 3
      Scrivi una funzione che cambi il testo dei p figli di un div
@@ -119,8 +116,11 @@
     */
 
     const changeUrls = function () {
-      const urls = document.getElementById('link')
-      link.setAttribute('href', 'https://www.google.com')
+      const allThelinks = document.querySelectorAll('a:not(footer a)')
+
+      for (let i = 0; i < allThelinks.length; i++) {
+        allThelinks[i].setAttribute('href', "https://www.google.com")
+      }
     }
     changeUrls()
     /* ESERCIZIO 5
@@ -130,7 +130,7 @@
     const addToTheSecond = function () {
       const list = document.getElementById('secondList')
       newLi = document.createElement('li')
-      newLi.textContent = '4rd'
+      newLi.innertext = '4rd'
       list.appendChild(newLi)
 
     }
@@ -142,8 +142,8 @@
 
     const addParagraph = function () {
       const contenitore = document.getElementsByTagName('div')[0]
-      newParagraph = document.createElement('p')
-      newParagraph.textContent = 'Aenean pellentesque magna ipsum, semper fermentum elit tincidunt et. Cras eget sollicitudin ligula. Integer tellus ante, condimentum eget vehicula vel, scelerisque et urna. Nam quis tincidunt felis. Phasellus turpis turpis, euismod accumsan maximus vitae, laoreet quis est. Aenean quis tellus et odio suscipit ultricies ac a elit. Aliquam nec molestie erat. Etiam quis nisl vel lectus pretium tempor vitae varius ipsum. Phasellus vulputate quis massa quis pellentesque. Donec fringilla sodales tortor. Vivamus bibendum blandit est, sit amet lobortis sem accumsan nec. Morbi feugiat mattis ultricies. Donec condimentum, metus ut egestas bibendum, ligula neque fringilla ante, non sagittis libero erat ornare nisi.'
+      const newParagraph = document.createElement('p')
+      newParagraph.innertext = 'Aenean pellentesque magna ipsum, semper fermentum elit tincidunt et. Cras eget sollicitudin ligula. Integer tellus ante, condimentum eget vehicula vel, scelerisque et urna. Nam quis tincidunt felis. Phasellus turpis turpis, euismod accumsan maximus vitae, laoreet quis est. Aenean quis tellus et odio suscipit ultricies ac a elit. Aliquam nec molestie erat. Etiam quis nisl vel lectus pretium tempor vitae varius ipsum. Phasellus vulputate quis massa quis pellentesque. Donec fringilla sodales tortor. Vivamus bibendum blandit est, sit amet lobortis sem accumsan nec. Morbi feugiat mattis ultricies. Donec condimentum, metus ut egestas bibendum, ligula neque fringilla ante, non sagittis libero erat ornare nisi.'
       contenitore.appendChild(newParagraph)
     }
     addParagraph()
@@ -175,32 +175,89 @@
     */
 
     const makeItClickable = function () {
-      const lastLetter = document.getElementsByTagName('h1')
-      lastLetter.addEventListener('click, function'(){
-        const currentText = h1Element.textContent 
-    if(currentText.length > 0) {
-        h1Element.textContent = currentText.slice(0, -1)
+      const title = document.querySelector('h1')
+      title.onclick = function () {
+        title.classList.toggle('myHeading')
       }
-    });
-};
+    }
+    makeItClickable()
+
     /* ESERCIZIO 10
      Crea una funzione che, al click sul footer, riveli l'URL del link interno come contenuto di un alert()
     */
 
-    const revealFooterLink = function () { }
-
+    const revealFooterLink = function (content) {
+      const footer = document.querySelector('footer')
+      footer.style.cursor = 'pointer'
+      footer.onclick = function () {
+        const link = document.querySelector('footer a')
+        const URL = link.getAttribute('href')
+        alert(URL)
+      }
+    }
+    revealFooterLink()
     /* ESERCIZIO 11
      Crea una funzione che crei una tabella nell'elemento con id "tableArea". 
      La tabella avrà 5 elementi e questa struttura: immagine, nome prodotto, quantità, prezzo
   */
 
-    const generateTable = function () { }
+    const generateTable = function () {
+      const tableArea = document.getElementById('tableArea')
+      tableArea.innerHTML =
+        `<table>
+         <tr>
+      <td>"Immagine"</td>
+      <td>"Prodotto"</td>
+      <td>"Quantità</td>
+      <td>"Prezzo"</td>
+        </tr>
 
+         <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+        </tr>
+
+         <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+        </tr>
+
+         <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+        </tr>
+
+         <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+        </tr>
+
+         <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+        </tr>
+        </table>
+          `
+
+    }
+    generateTable()
     /* ESERCIZIO 12
      Crea una funzione che aggiunga una riga alla tabella precedentemente creata e fornisca i dati necessari come parametri
   */
 
-    const addRow = function () { }
+    const addRow = function () {
+
+    }
 
     /* ESERCIZIO 14
     Crea una funzione che nasconda le immagini della tabella quando eseguita
@@ -212,7 +269,17 @@
     Crea una funzione che cambi il colore del h2 con id "changeMyColor" con un colore random ad ogni click ricevuto
   */
 
-    const changeColorWithRandom = function () { }
+    const changeColorWithRandom = function () {
+      const colorChange = document.getElementById('changeMyColor')
+
+      const randomColor = `rgb(${Math.floor(
+        Math.random() * 256
+      )}, ${Math.floor(Math.random() * 256)}, ${Math.floor(
+        Math.random() * 256
+      )})`
+      colorChange.style.color = randomColor
+    }
+    changeColorWithRandom()
   </script>
 </body>
 
